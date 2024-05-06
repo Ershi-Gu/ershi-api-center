@@ -1,0 +1,122 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.ershi</groupId>
+  <artifactId>ershi-api-center</artifactId>
+  <version>0.0.1</version>
+
+  <!--表明这是一个父工程, 聚合管理其他模块-->
+  <packaging>pom</packaging>
+
+  <name>ershi-api-center</name>
+  <url>http://maven.apache.org</url>
+  <modules>
+    <module>ershi-api-backend</module>
+    <module>ershi-api-gateway</module>
+  </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <!--聚合管理依赖版本-->
+    <spring-boot-dependencies.version>2.7.2</spring-boot-dependencies.version>
+    <spring-cloud-dependencies.version>2021.0.9</spring-cloud-dependencies.version>
+    <mybatis-plus-boot-starter.version>3.5.2</mybatis-plus-boot-starter.version>
+    <dubbo.version>3.0.9</dubbo.version>
+    <nacos-client.version>2.1.0</nacos-client.version>
+    <wx-java-mp-spring-boot-starter.version>4.4.0</wx-java-mp-spring-boot-starter.version>
+    <knife4j-openapi2-spring-boot-starter.version>4.4.0</knife4j-openapi2-spring-boot-starter.version>
+    <cos_api.version>5.6.89</cos_api.version>
+    <easyexcel.version>3.1.1</easyexcel.version>
+    <hutool-all.version>5.8.8</hutool-all.version>
+    <ershi-api-client-sdk.version>0.0.1</ershi-api-client-sdk.version>
+    <fastjson.version>2.0.47</fastjson.version>
+  </properties>
+
+  <!--通过 dependencyManagement 进行版本仲裁-->
+  <dependencyManagement>
+    <dependencies>
+      <!--引入 spring-boot-->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot-dependencies.version}</version>
+        <!--通过 pom + import 解决maven单继承机制-->
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!--引入 spring-cloud-->
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud-dependencies.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!--引入 cloud-alibaba-->
+
+      <!--mybatis-plus-->
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${mybatis-plus-boot-starter.version}</version>
+      </dependency>
+      <!--duboo-->
+      <dependency>
+        <groupId>org.apache.dubbo</groupId>
+        <artifactId>dubbo</artifactId>
+        <version>${dubbo.version}</version>
+      </dependency>
+      <!--nacos-client-->
+      <dependency>
+        <groupId>com.alibaba.nacos</groupId>
+        <artifactId>nacos-client</artifactId>
+        <version>${nacos-client.version}</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/com.github.binarywang/wx-java-mp-spring-boot-starter -->
+      <dependency>
+        <groupId>com.github.binarywang</groupId>
+        <artifactId>wx-java-mp-spring-boot-starter</artifactId>
+        <version>${wx-java-mp-spring-boot-starter.version}</version>
+      </dependency>
+      <!-- https://doc.xiaominfo.com/docs/quick-start#openapi2 -->
+      <dependency>
+        <groupId>com.github.xiaoymin</groupId>
+        <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+        <version>${knife4j-openapi2-spring-boot-starter.version}</version>
+      </dependency>
+      <!-- https://cloud.tencent.com/document/product/436/10199-->
+      <dependency>
+        <groupId>com.qcloud</groupId>
+        <artifactId>cos_api</artifactId>
+        <version>${cos_api.version}</version>
+      </dependency>
+      <!-- https://github.com/alibaba/easyexcel -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>easyexcel</artifactId>
+        <version>${easyexcel.version}</version>
+      </dependency>
+      <!-- https://hutool.cn/docs/index.html#/-->
+      <dependency>
+        <groupId>cn.hutool</groupId>
+        <artifactId>hutool-all</artifactId>
+        <version>${hutool-all.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.ershi</groupId>
+        <artifactId>ershi-api-client-sdk</artifactId>
+        <version>${ershi-api-client-sdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>${fastjson.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

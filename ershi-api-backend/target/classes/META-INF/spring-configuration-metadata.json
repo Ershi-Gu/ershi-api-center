@@ -1,0 +1,56 @@
+{
+  "groups": [
+    {
+      "name": "cos.client",
+      "type": "com.ershi.springbootinit.config.CosClientConfig",
+      "sourceType": "com.ershi.springbootinit.config.CosClientConfig"
+    },
+    {
+      "name": "wx.open",
+      "type": "com.ershi.springbootinit.config.WxOpenConfig",
+      "sourceType": "com.ershi.springbootinit.config.WxOpenConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "cos.client.access-key",
+      "type": "java.lang.String",
+      "description": "accessKey",
+      "sourceType": "com.ershi.springbootinit.config.CosClientConfig"
+    },
+    {
+      "name": "cos.client.bucket",
+      "type": "java.lang.String",
+      "description": "桶名",
+      "sourceType": "com.ershi.springbootinit.config.CosClientConfig"
+    },
+    {
+      "name": "cos.client.region",
+      "type": "java.lang.String",
+      "description": "区域",
+      "sourceType": "com.ershi.springbootinit.config.CosClientConfig"
+    },
+    {
+      "name": "cos.client.secret-key",
+      "type": "java.lang.String",
+      "description": "secretKey",
+      "sourceType": "com.ershi.springbootinit.config.CosClientConfig"
+    },
+    {
+      "name": "wx.open.app-id",
+      "type": "java.lang.String",
+      "sourceType": "com.ershi.springbootinit.config.WxOpenConfig"
+    },
+    {
+      "name": "wx.open.app-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.ershi.springbootinit.config.WxOpenConfig"
+    },
+    {
+      "name": "wx.open.wx-mp-service",
+      "type": "me.chanjar.weixin.mp.api.WxMpService",
+      "sourceType": "com.ershi.springbootinit.config.WxOpenConfig"
+    }
+  ],
+  "hints": []
+}

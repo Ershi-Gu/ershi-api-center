@@ -1,0 +1,27 @@
+# 测试配置文件
+# @author <a href="https://github.com/Ershi-Gu">Ershi-Gu</a>
+# 
+server:
+  port: 8081
+spring:
+  # 数据库配置
+  # todo 需替换配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ershi_api
+    username: root
+    password: 200303078
+  # Redis 配置
+  # todo 需替换配置
+#  redis:
+#    database: 1
+#    host: localhost
+#    port: 8081
+#    timeout: 5000
+#    password: 123456
+  # Elasticsearch 配置
+  # todo 需替换配置
+#  elasticsearch:
+#    uris: http://localhost:9200
+#    username: root
+#    password: 123456

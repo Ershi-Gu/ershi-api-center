@@ -1,0 +1,30 @@
+server:
+  port: 9091
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: api_route
+          uri: http://localhost:8082 # 实际转发地址（需要实现动态路由，根据接口信息转发到对应地址）
+          predicates:
+            - Path=/api/** # 前缀断言
+      default-filters: # 流量染色
+        - AddResponseHeader=ershiapi, ershiapi
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
+
+dubbo:
+  application:
+    name: ershiapi-gateway
+  protocol:
+    name: dubbo
+    port: -1 # 随机分配协议端口
+  registry:
+    address: nacos://localhost:8848
+
