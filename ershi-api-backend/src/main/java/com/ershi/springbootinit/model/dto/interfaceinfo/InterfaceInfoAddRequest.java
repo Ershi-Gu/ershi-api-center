@@ -13,6 +13,8 @@ import java.io.Serializable;
 @Data
 public class InterfaceInfoAddRequest implements Serializable {
 
+    private static final long serialVersionUID = -3147150582676833209L;
+
     /**
      * 接口名称
      */
@@ -22,6 +24,11 @@ public class InterfaceInfoAddRequest implements Serializable {
      * 接口描述
      */
     private String description;
+
+    /**
+     * 接口主机
+     */
+    private String host;
 
     /**
      * 接口地址
@@ -47,4 +54,6 @@ public class InterfaceInfoAddRequest implements Serializable {
      * 响应头
      */
     private String responseHeader;
+
+
 }

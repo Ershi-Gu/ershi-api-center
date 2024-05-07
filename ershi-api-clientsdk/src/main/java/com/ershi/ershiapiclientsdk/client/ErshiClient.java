@@ -78,5 +78,4 @@ public class ErshiClient {
         map.put("sign", SignUtils.getSign(map, secretKey));
         return map;
     }
-
 }

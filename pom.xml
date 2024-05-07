@@ -36,7 +36,7 @@
     <easyexcel.version>3.1.1</easyexcel.version>
     <hutool-all.version>5.8.8</hutool-all.version>
     <fastjson.version>2.0.47</fastjson.version>
-    <ershi-api-client-sdk.version>0.0.1</ershi-api-client-sdk.version>
+    <ershi-api-clientsdk.version>0.0.1</ershi-api-clientsdk.version>
     <ershi-api-common.version>0.0.1</ershi-api-common.version>
   </properties>
 
@@ -112,8 +112,8 @@
       </dependency>
       <dependency>
         <groupId>com.ershi</groupId>
-        <artifactId>ershi-api-client-sdk</artifactId>
-        <version>${ershi-api-client-sdk.version}</version>
+        <artifactId>ershi-api-clientsdk</artifactId>
+        <version>${ershi-api-clientsdk.version}</version>
       </dependency>
       <dependency>
         <groupId>com.alibaba</groupId>

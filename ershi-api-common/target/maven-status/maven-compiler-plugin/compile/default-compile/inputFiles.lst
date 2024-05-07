@@ -3,7 +3,9 @@ D:\ComputerLearning\EershiProject\ershi-api-center\ershi-api-common\src\main\jav
 D:\ComputerLearning\EershiProject\ershi-api-center\ershi-api-common\src\main\java\com\ershi\common\service\InnerInterfaceInfoService.java
 D:\ComputerLearning\EershiProject\ershi-api-center\ershi-api-common\src\main\java\com\ershi\common\model\entity\UserToInterfaceInfo.java
 D:\ComputerLearning\EershiProject\ershi-api-center\ershi-api-common\src\main\java\com\ershi\common\model\entity\PostThumb.java
+D:\ComputerLearning\EershiProject\ershi-api-center\ershi-api-common\src\main\java\com\ershi\common\utils\HttpClient.java
 D:\ComputerLearning\EershiProject\ershi-api-center\ershi-api-common\src\main\java\com\ershi\common\model\entity\InterfaceInfo.java
 D:\ComputerLearning\EershiProject\ershi-api-center\ershi-api-common\src\main\java\com\ershi\common\model\entity\Post.java
 D:\ComputerLearning\EershiProject\ershi-api-center\ershi-api-common\src\main\java\com\ershi\common\model\entity\PostFavour.java
+D:\ComputerLearning\EershiProject\ershi-api-center\ershi-api-common\src\main\java\com\ershi\common\utils\ParameterProcessor.java
 D:\ComputerLearning\EershiProject\ershi-api-center\ershi-api-common\src\main\java\com\ershi\common\model\entity\User.java

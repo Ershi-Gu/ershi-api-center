@@ -3,6 +3,7 @@ package com.ershi.springbootinit.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ershi.common.model.entity.InterfaceInfo;
 import com.ershi.common.model.entity.User;
+import com.ershi.common.utils.HttpClient;
 import com.ershi.ershiapiclientsdk.client.ErshiClient;
 import com.ershi.springbootinit.annotation.AuthCheck;
 import com.ershi.springbootinit.common.*;
@@ -222,19 +223,30 @@ public class InterfaceInfoController {
         }
 
         // 检验该接口是否存在
-        InterfaceInfo byId = interfaceinfoService.getById(id);
-        if (byId == null) {
+        InterfaceInfo interfaceInfo = interfaceinfoService.getById(id);
+        if (interfaceInfo == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "该接口不存在");
         }
 
         // 检验该接口是否可用(访问一下就知道是否可用了 - 通过 Http 客户端)
-        // todo 将接口可用性检验修改为灵活配置, 接收接口 URL 和参数进行调用
-        com.ershi.ershiapiclientsdk.model.User user = new com.ershi.ershiapiclientsdk.model.User();
-        user.setName("ershi0408");
-        String result = ershiClient.getNameByPost(user);
-        if (StringUtils.isBlank(result)) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");
+        // todo 根据接口的 host、url 以及示例参数直接请求接口（不需要通过网关，因为是管理员操作），只要有返回就说明接口可以使用，具体返回数据交由用户检查
+        String targetHost = interfaceInfo.getHost();
+        String targetUrl = interfaceInfo.getUrl();
+        if (StringUtils.isAnyBlank(targetHost, targetUrl)) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "接口地址错误");
         }
+
+        HttpClient httpClient = new HttpClient(targetHost, targetUrl);
+//        if ("GET".equals(interfaceInfo.getMethod())){
+//            httpClient.byGet()
+//        } else if ("POST".equals(interfaceInfo.getMethod())) {
+//            httpClient.byPost()
+//        }
+
+
+//        if (StringUtils.isBlank(result)) {
+//            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");
+//        }
 
         // 修改 InterfaceInfo 的接口状态为 ONLINE
         InterfaceInfoUpdateRequest interfaceInfoUpdateRequest = new InterfaceInfoUpdateRequest();
@@ -261,8 +273,8 @@ public class InterfaceInfoController {
         }
 
         // 检验该接口是否存在
-        InterfaceInfo byId = interfaceinfoService.getById(id);
-        if (byId == null) {
+        InterfaceInfo interfaceinfo = interfaceinfoService.getById(id);
+        if (interfaceinfo == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "该接口不存在");
         }
 
@@ -279,6 +291,7 @@ public class InterfaceInfoController {
 
 
     // region 接口调用
+
     /**
      * 调用接口
      *
@@ -288,7 +301,7 @@ public class InterfaceInfoController {
      */
     @PostMapping("/invoke")
     public BaseResponse<String> invokeInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest,
-                                                     HttpServletRequest request) {
+                                                    HttpServletRequest request) {
 
         if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口不存在");
@@ -297,7 +310,7 @@ public class InterfaceInfoController {
 
         // 请求参数验证
         String userRequestParams = interfaceInfoInvokeRequest.getUserRequestParams();
-        if (StringUtils.isBlank(userRequestParams)){
+        if (StringUtils.isBlank(userRequestParams)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数错误");
         }
 

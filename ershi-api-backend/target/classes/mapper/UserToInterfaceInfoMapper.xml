@@ -13,12 +13,12 @@
             <result property="status" column="status" jdbcType="INTEGER"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
-            <result property="isDeleted" column="isDeleted" jdbcType="TINYINT"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,userId,interfaceInfoId,
         invokeCount,leftInvokeCount,status,
-        createTime,updateTime,isDeleted
+        createTime,updateTime,isDelete
     </sql>
 </mapper>
