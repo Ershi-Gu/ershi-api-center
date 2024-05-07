@@ -11,6 +11,8 @@ import com.ershi.springbootinit.mapper.InterfaceInfoMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 
+import java.util.List;
+
 
 @DubboService
 public class InnerInterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, InterfaceInfo>
@@ -26,5 +28,11 @@ public class InnerInterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapp
         queryWrapper.eq("url", url);
         queryWrapper.eq("method", method);
         return this.getOne(queryWrapper);
+    }
+
+
+    @Override
+    public List<InterfaceInfo> getAllInterfaceInfo() {
+        return this.list();
     }
 }

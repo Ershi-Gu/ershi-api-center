@@ -1,4 +1,4 @@
-package com.ershi.ershiapigateway;
+package com.ershi.ershiapigateway.globalfilter;
 
 
 import com.alibaba.fastjson.JSON;
@@ -6,10 +6,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.ValueFilter;
+import com.ershi.common.model.entity.InterfaceInfo;
 import com.ershi.common.model.entity.User;
 import com.ershi.common.service.InnerInterfaceInfoService;
 import com.ershi.common.service.InnerUserService;
 import com.ershi.ershiapiclientsdk.utils.SignUtils;
+import com.ershi.ershiapigateway.globalmodel.TotalInterfaceInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.reactivestreams.Publisher;
@@ -32,11 +34,9 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -52,6 +52,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
     /**
      * ip 白名单
      */
+    // todo 读取外部资源，编写ip白名单
     private static final List<String> IP_WHITE_LIST = Arrays.asList("127.0.0.1");
 
     @DubboReference
@@ -59,6 +60,9 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
     @DubboReference
     private InnerInterfaceInfoService innerInterfaceInfoService;
+
+    @Resource
+    private TotalInterfaceInfo totalInterfaceInfo;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

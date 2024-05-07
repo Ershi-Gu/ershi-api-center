@@ -2,9 +2,7 @@ package com.ershi.common.utils;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,12 +10,12 @@ import java.util.Map;
  * @author Ershi
  * @date 2024/05/07
  */
-public class HttpClient {
+public class HttpClientByAdmin {
 
     private String targetHost = "";
     private String targetUrl = "";
 
-    public HttpClient(String targetHost, String targetUrl) {
+    public HttpClientByAdmin(String targetHost, String targetUrl) {
         this.targetHost = targetHost;
         this.targetUrl = targetUrl;
     }

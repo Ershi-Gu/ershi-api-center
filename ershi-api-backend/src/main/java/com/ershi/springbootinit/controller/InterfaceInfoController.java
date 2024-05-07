@@ -3,7 +3,7 @@ package com.ershi.springbootinit.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ershi.common.model.entity.InterfaceInfo;
 import com.ershi.common.model.entity.User;
-import com.ershi.common.utils.HttpClient;
+import com.ershi.common.utils.HttpClientByAdmin;
 import com.ershi.common.utils.ParameterProcessor;
 import com.ershi.ershiapiclientsdk.client.ErshiClient;
 import com.ershi.springbootinit.annotation.AuthCheck;
@@ -239,11 +239,11 @@ public class InterfaceInfoController {
         String requestParamsExample = interfaceInfo.getRequestParamsExample();
         String result = null;
         try {
-            HttpClient httpClient = new HttpClient(targetHost, targetUrl);
+            HttpClientByAdmin httpClientByAdmin = new HttpClientByAdmin(targetHost, targetUrl);
             if ("GET".equals(interfaceInfo.getMethod())){
-                result = httpClient.byGet(ParameterProcessor.jsonToMap(requestParamsExample));
+                result = httpClientByAdmin.byGet(ParameterProcessor.jsonToMap(requestParamsExample));
             } else if ("POST".equals(interfaceInfo.getMethod())) {
-                result = httpClient.byPost(requestParamsExample);
+                result = httpClientByAdmin.byPost(requestParamsExample);
             }
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");

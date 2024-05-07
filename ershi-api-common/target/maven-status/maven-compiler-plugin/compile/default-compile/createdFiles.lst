@@ -6,4 +6,5 @@ com\ershi\common\service\InnerInterfaceInfoService.class
 com\ershi\common\model\entity\InterfaceInfo.class
 com\ershi\common\model\entity\Post.class
 com\ershi\common\service\InnerUserToInterfaceInfoService.class
+com\ershi\common\utils\HttpClientByAdmin.class
 com\ershi\common\model\entity\PostFavour.class
