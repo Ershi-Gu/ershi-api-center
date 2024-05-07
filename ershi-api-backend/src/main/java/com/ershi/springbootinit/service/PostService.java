@@ -3,8 +3,8 @@ package com.ershi.springbootinit.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ershi.common.model.entity.Post;
 import com.ershi.springbootinit.model.dto.post.PostQueryRequest;
-import com.ershi.springbootinit.model.entity.Post;
 import com.ershi.springbootinit.model.vo.PostVO;
 
 import javax.servlet.http.HttpServletRequest;

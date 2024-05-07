@@ -1,7 +1,7 @@
 package com.ershi.springbootinit.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ershi.springbootinit.model.entity.PostThumb;
+import com.ershi.common.model.entity.PostThumb;
 
 /**
  * 帖子点赞数据库操作

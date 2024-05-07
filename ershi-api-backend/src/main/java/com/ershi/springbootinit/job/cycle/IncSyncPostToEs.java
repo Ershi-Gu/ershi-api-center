@@ -1,10 +1,10 @@
 package com.ershi.springbootinit.job.cycle;
 
 import cn.hutool.core.collection.CollUtil;
+import com.ershi.common.model.entity.Post;
 import com.ershi.springbootinit.esdao.PostEsDao;
 import com.ershi.springbootinit.mapper.PostMapper;
 import com.ershi.springbootinit.model.dto.post.PostEsDTO;
-import com.ershi.springbootinit.model.entity.Post;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 

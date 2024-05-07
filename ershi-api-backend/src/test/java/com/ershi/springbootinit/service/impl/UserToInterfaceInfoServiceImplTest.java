@@ -1,6 +1,7 @@
 package com.ershi.springbootinit.service.impl;
 
 
+import com.ershi.common.service.InnerUserToInterfaceInfoService;
 import com.ershi.springbootinit.service.UserToInterfaceInfoService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,11 +13,11 @@ import javax.annotation.Resource;
 public class UserToInterfaceInfoServiceImplTest {
 
     @Resource
-    UserToInterfaceInfoService userToInterfaceInfoService;
+    InnerUserToInterfaceInfoService innerUserToInterfaceInfoService;
 
     @Test
     public void invokeCount() {
-        boolean b = userToInterfaceInfoService.invokeCount(4, 1);
+        boolean b = innerUserToInterfaceInfoService.invokeCount(4, 1);
         Assertions.assertTrue(b);
     }
 }

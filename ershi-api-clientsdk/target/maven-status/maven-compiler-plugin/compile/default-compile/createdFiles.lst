@@ -1,0 +1,5 @@
+com\ershi\ershiapiclientsdk\ErshiAPIClientConfig.class
+com\ershi\ershiapiclientsdk\utils\SignUtils.class
+com\ershi\ershiapiclientsdk\model\User.class
+META-INF\spring-configuration-metadata.json
+com\ershi\ershiapiclientsdk\client\ErshiClient.class

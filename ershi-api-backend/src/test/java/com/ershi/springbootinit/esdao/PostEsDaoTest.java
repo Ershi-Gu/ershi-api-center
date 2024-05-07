@@ -2,7 +2,6 @@ package com.ershi.springbootinit.esdao;
 
 import com.ershi.springbootinit.model.dto.post.PostEsDTO;
 import com.ershi.springbootinit.model.dto.post.PostQueryRequest;
-import com.ershi.springbootinit.model.entity.Post;
 import com.ershi.springbootinit.service.PostService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

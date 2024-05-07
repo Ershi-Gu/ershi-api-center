@@ -1,7 +1,7 @@
 package com.ershi.springbootinit.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ershi.springbootinit.model.entity.UserToInterfaceInfo;
+import com.ershi.common.model.entity.UserToInterfaceInfo;
 
 /**
 * @author qingtian_jun

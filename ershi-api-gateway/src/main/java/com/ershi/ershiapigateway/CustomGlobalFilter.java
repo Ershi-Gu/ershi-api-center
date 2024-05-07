@@ -6,8 +6,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.ValueFilter;
+import com.ershi.common.model.entity.User;
+import com.ershi.common.service.InnerInterfaceInfoService;
+import com.ershi.common.service.InnerUserService;
 import com.ershi.ershiapiclientsdk.utils.SignUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -19,6 +23,7 @@ import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
@@ -49,13 +54,21 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
      */
     private static final List<String> IP_WHITE_LIST = Arrays.asList("127.0.0.1");
 
+    @DubboReference
+    private InnerUserService innerUserService;
+
+    @DubboReference
+    private InnerInterfaceInfoService innerInterfaceInfoService;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         //1. 记录请求的日志
         ServerHttpRequest request = exchange.getRequest();
         log.info("请求唯一标识: " + request.getId());
-        log.info("请求路径: " + request.getPath());
-        log.info("请求方法: " + request.getMethod());
+        String url = request.getPath().value();
+        log.info("请求路径: " + url);
+        String method = request.getMethod().toString();
+        log.info("请求方法: " + method);
         log.info("请求参数: " + request.getQueryParams());
         String sourceAddress = request.getLocalAddress().getHostString();
         log.info("请求来源地址: " + sourceAddress);
@@ -63,6 +76,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         ServerHttpResponse response = exchange.getResponse();
 
         //2. 黑白名单
+        // todo 黑白名单完善
         if (!IP_WHITE_LIST.contains(sourceAddress)) {
             return handlerNoAuth(response);
         }
@@ -82,28 +96,38 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         }
 
         String sign = headers.getFirst("sign");
-        // todo 从数据库查询 ak / sk
-        if (!"ershi".equals(accessKey)) {
+        User invokeUser = null;
+        try {
+            invokeUser = innerUserService.getInvokeUser(accessKey);
+        } catch (Exception e) {
+            // todo 继续抽取公共模块、例如 ErrorCode
+            log.error("getInvokeUser error = ", e);
+        }
+        if (invokeUser == null) {
             return handlerNoAuth(response);
         }
+        // 获取对应 sk
+        String secreteKey = invokeUser.getSecreteKey();
         HashMap<String, String> map = new HashMap<>();
         map.put("accessKey", accessKey);
         map.put("body", body);
         map.put("nonce", nonce);
         map.put("timestamp", timestamp);
-        String serverSign = SignUtils.getSign(map, "abcdefgh");
-        if (!sign.equals(serverSign)) {
+        String serverSign = SignUtils.getSign(map, secreteKey);
+        if (sign == null || !sign.equals(serverSign)) {
             return handlerNoAuth(response);
         }
 
         //4. 请求的模拟接口是否存在
         // todo 从数据中查询模拟接口是否存在，以及请求方法是否匹配 (还可以检验请求参数)
+//        innerInterfaceInfoService.getInvokeInterfaceInfo()
         //5. 请求参数校验
         // todo 有参校验
 
         //6. 请求转发、调用模拟接口
         //7. 响应日志
         //8. 调用成功，统计调用次数 + 1
+        // todo 检查该用户是否还有调用次数
         return handleResponse(exchange, chain);
     }
 
@@ -122,6 +146,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
             DataBufferFactory bufferFactory = originalResponse.bufferFactory();
             HttpStatus statusCode = originalResponse.getStatusCode();
             if (statusCode != HttpStatus.OK) {
+                // todo 异常处理，不能暴露服务器内部信息
                 return chain.filter(exchange);//降级处理返回数据
             }
             // 装饰、增强能力
@@ -195,7 +220,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
 
     /**
-     * 无权限处理
+     * 无权限处理返回
      *
      * @param response
      * @return {@link Mono}<{@link Void}>

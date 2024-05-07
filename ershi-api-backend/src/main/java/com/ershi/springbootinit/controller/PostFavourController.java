@@ -1,6 +1,8 @@
 package com.ershi.springbootinit.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ershi.common.model.entity.Post;
+import com.ershi.common.model.entity.User;
 import com.ershi.springbootinit.common.BaseResponse;
 import com.ershi.springbootinit.common.ErrorCode;
 import com.ershi.springbootinit.common.ResultUtils;
@@ -9,8 +11,6 @@ import com.ershi.springbootinit.exception.ThrowUtils;
 import com.ershi.springbootinit.model.dto.post.PostQueryRequest;
 import com.ershi.springbootinit.model.dto.postfavour.PostFavourAddRequest;
 import com.ershi.springbootinit.model.dto.postfavour.PostFavourQueryRequest;
-import com.ershi.springbootinit.model.entity.Post;
-import com.ershi.springbootinit.model.entity.User;
 import com.ershi.springbootinit.model.vo.PostVO;
 import com.ershi.springbootinit.service.PostFavourService;
 import com.ershi.springbootinit.service.PostService;

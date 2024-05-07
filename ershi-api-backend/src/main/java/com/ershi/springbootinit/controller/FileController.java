@@ -1,6 +1,7 @@
 package com.ershi.springbootinit.controller;
 
 import cn.hutool.core.io.FileUtil;
+import com.ershi.common.model.entity.User;
 import com.ershi.springbootinit.common.BaseResponse;
 import com.ershi.springbootinit.common.ErrorCode;
 import com.ershi.springbootinit.common.ResultUtils;
@@ -8,7 +9,6 @@ import com.ershi.springbootinit.constant.FileConstant;
 import com.ershi.springbootinit.exception.BusinessException;
 import com.ershi.springbootinit.manager.CosManager;
 import com.ershi.springbootinit.model.dto.file.UploadFileRequest;
-import com.ershi.springbootinit.model.entity.User;
 import com.ershi.springbootinit.model.enums.FileUploadBizEnum;
 import com.ershi.springbootinit.service.UserService;
 import lombok.extern.slf4j.Slf4j;

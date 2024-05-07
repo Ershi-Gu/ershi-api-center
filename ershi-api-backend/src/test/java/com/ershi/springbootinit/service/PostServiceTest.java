@@ -2,7 +2,6 @@ package com.ershi.springbootinit.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ershi.springbootinit.model.dto.post.PostQueryRequest;
-import com.ershi.springbootinit.model.entity.Post;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

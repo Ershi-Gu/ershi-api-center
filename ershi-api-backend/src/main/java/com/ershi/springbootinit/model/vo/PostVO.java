@@ -1,7 +1,7 @@
 package com.ershi.springbootinit.model.vo;
 
 import cn.hutool.json.JSONUtil;
-import com.ershi.springbootinit.model.entity.Post;
+import com.ershi.common.model.entity.Post;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

@@ -6,11 +6,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ershi.common.model.entity.UserToInterfaceInfo;
 import com.ershi.springbootinit.common.ErrorCode;
 import com.ershi.springbootinit.exception.BusinessException;
 import com.ershi.springbootinit.mapper.UserToInterfaceInfoMapper;
 import com.ershi.springbootinit.model.dto.usertointerfaceinfo.UserToInterfaceInfoQueryRequest;
-import com.ershi.springbootinit.model.entity.UserToInterfaceInfo;
 import com.ershi.springbootinit.model.vo.UserToInterfaceInfoVO;
 import com.ershi.springbootinit.service.UserToInterfaceInfoService;
 import org.springframework.beans.BeanUtils;
@@ -107,6 +107,7 @@ public class UserToInterfaceInfoServiceImpl extends ServiceImpl<UserToInterfaceI
         return userToInterfaceInfoVOPage;
     }
 
+
     @Override
     public boolean invokeCount(long interfaceInfoId, long userId) {
         // 参数验证
@@ -117,7 +118,7 @@ public class UserToInterfaceInfoServiceImpl extends ServiceImpl<UserToInterfaceI
         UpdateWrapper<UserToInterfaceInfo> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("interfaceInfoId", interfaceInfoId);
         updateWrapper.eq("userId", userId);
-        // todo 次数验证
+        // todo 次数验证 (是否小于0)
         updateWrapper.setSql("leftInvokeCount = leftInvokeCount - 1, invokeCount = invokeCount + 1");
         return this.update(updateWrapper);
     }

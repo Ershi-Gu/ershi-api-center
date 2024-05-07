@@ -14,6 +14,8 @@
   <modules>
     <module>ershi-api-backend</module>
     <module>ershi-api-gateway</module>
+    <module>ershi-api-common</module>
+    <module>ershi-api-clientsdk</module>
   </modules>
 
   <properties>
@@ -33,8 +35,9 @@
     <cos_api.version>5.6.89</cos_api.version>
     <easyexcel.version>3.1.1</easyexcel.version>
     <hutool-all.version>5.8.8</hutool-all.version>
-    <ershi-api-client-sdk.version>0.0.1</ershi-api-client-sdk.version>
     <fastjson.version>2.0.47</fastjson.version>
+    <ershi-api-client-sdk.version>0.0.1</ershi-api-client-sdk.version>
+    <ershi-api-common.version>0.0.1</ershi-api-common.version>
   </properties>
 
   <!--通过 dependencyManagement 进行版本仲裁-->
@@ -116,6 +119,11 @@
         <groupId>com.alibaba</groupId>
         <artifactId>fastjson</artifactId>
         <version>${fastjson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.ershi</groupId>
+        <artifactId>ershi-api-common</artifactId>
+        <version>${ershi-api-common.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

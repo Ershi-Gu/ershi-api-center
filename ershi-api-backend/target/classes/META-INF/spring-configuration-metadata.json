@@ -19,15 +19,20 @@
       "sourceType": "com.ershi.springbootinit.config.CosClientConfig"
     },
     {
+      "name": "cos.client.accessKey",
+      "type": "java.lang.String",
+      "description": "Description for cos.client.accessKey."
+    },
+    {
       "name": "cos.client.bucket",
       "type": "java.lang.String",
-      "description": "桶名",
+      "description": "Description for cos.client.bucket.",
       "sourceType": "com.ershi.springbootinit.config.CosClientConfig"
     },
     {
       "name": "cos.client.region",
       "type": "java.lang.String",
-      "description": "区域",
+      "description": "Description for cos.client.region.",
       "sourceType": "com.ershi.springbootinit.config.CosClientConfig"
     },
     {
@@ -35,6 +40,11 @@
       "type": "java.lang.String",
       "description": "secretKey",
       "sourceType": "com.ershi.springbootinit.config.CosClientConfig"
+    },
+    {
+      "name": "cos.client.secretKey",
+      "type": "java.lang.String",
+      "description": "Description for cos.client.secretKey."
     },
     {
       "name": "wx.open.app-id",
@@ -45,6 +55,16 @@
       "name": "wx.open.app-secret",
       "type": "java.lang.String",
       "sourceType": "com.ershi.springbootinit.config.WxOpenConfig"
+    },
+    {
+      "name": "wx.open.appId",
+      "type": "java.lang.String",
+      "description": "Description for wx.open.appId."
+    },
+    {
+      "name": "wx.open.appSecret",
+      "type": "java.lang.String",
+      "description": "Description for wx.open.appSecret."
     },
     {
       "name": "wx.open.wx-mp-service",

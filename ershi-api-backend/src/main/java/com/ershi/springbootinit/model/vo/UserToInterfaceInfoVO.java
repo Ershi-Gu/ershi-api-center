@@ -2,7 +2,7 @@ package com.ershi.springbootinit.model.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.ershi.springbootinit.model.entity.UserToInterfaceInfo;
+import com.ershi.common.model.entity.UserToInterfaceInfo;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

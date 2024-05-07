@@ -3,8 +3,8 @@ package com.ershi.springbootinit.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ershi.common.model.entity.UserToInterfaceInfo;
 import com.ershi.springbootinit.model.dto.usertointerfaceinfo.UserToInterfaceInfoQueryRequest;
-import com.ershi.springbootinit.model.entity.UserToInterfaceInfo;
 import com.ershi.springbootinit.model.vo.InterfaceInfoVO;
 import com.ershi.springbootinit.model.vo.UserToInterfaceInfoVO;
 

@@ -1,9 +1,9 @@
 package com.ershi.springbootinit.job.once;
 
 import cn.hutool.core.collection.CollUtil;
+import com.ershi.common.model.entity.Post;
 import com.ershi.springbootinit.esdao.PostEsDao;
 import com.ershi.springbootinit.model.dto.post.PostEsDTO;
-import com.ershi.springbootinit.model.entity.Post;
 import com.ershi.springbootinit.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

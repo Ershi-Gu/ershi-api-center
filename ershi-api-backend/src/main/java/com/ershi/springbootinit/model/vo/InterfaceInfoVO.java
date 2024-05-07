@@ -1,6 +1,6 @@
 package com.ershi.springbootinit.model.vo;
 
-import com.ershi.springbootinit.model.entity.InterfaceInfo;
+import com.ershi.common.model.entity.InterfaceInfo;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

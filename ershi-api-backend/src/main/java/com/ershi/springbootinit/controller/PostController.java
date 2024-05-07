@@ -2,6 +2,8 @@ package com.ershi.springbootinit.controller;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ershi.common.model.entity.Post;
+import com.ershi.common.model.entity.User;
 import com.ershi.springbootinit.annotation.AuthCheck;
 import com.ershi.springbootinit.common.BaseResponse;
 import com.ershi.springbootinit.common.DeleteRequest;
@@ -14,8 +16,6 @@ import com.ershi.springbootinit.model.dto.post.PostAddRequest;
 import com.ershi.springbootinit.model.dto.post.PostEditRequest;
 import com.ershi.springbootinit.model.dto.post.PostQueryRequest;
 import com.ershi.springbootinit.model.dto.post.PostUpdateRequest;
-import com.ershi.springbootinit.model.entity.Post;
-import com.ershi.springbootinit.model.entity.User;
 import com.ershi.springbootinit.model.vo.PostVO;
 import com.ershi.springbootinit.service.PostService;
 import com.ershi.springbootinit.service.UserService;

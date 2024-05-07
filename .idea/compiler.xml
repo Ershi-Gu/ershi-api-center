@@ -7,8 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="ershi-api-common" />
         <module name="ershi-api-backend" />
         <module name="ershi-api-gateway" />
+        <module name="ershi-api-clientsdk" />
       </profile>
     </annotationProcessing>
   </component>

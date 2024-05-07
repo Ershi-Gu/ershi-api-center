@@ -1,7 +1,7 @@
 package com.ershi.springbootinit.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ershi.springbootinit.model.entity.InterfaceInfo;
+import com.ershi.common.model.entity.InterfaceInfo;
 
 /**
 * @author Ershi-Gu

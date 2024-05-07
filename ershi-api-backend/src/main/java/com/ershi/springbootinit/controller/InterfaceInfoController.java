@@ -1,6 +1,8 @@
 package com.ershi.springbootinit.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ershi.common.model.entity.InterfaceInfo;
+import com.ershi.common.model.entity.User;
 import com.ershi.ershiapiclientsdk.client.ErshiClient;
 import com.ershi.springbootinit.annotation.AuthCheck;
 import com.ershi.springbootinit.common.*;
@@ -11,8 +13,6 @@ import com.ershi.springbootinit.model.dto.interfaceinfo.InterfaceInfoAddRequest;
 import com.ershi.springbootinit.model.dto.interfaceinfo.InterfaceInfoInvokeRequest;
 import com.ershi.springbootinit.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.ershi.springbootinit.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
-import com.ershi.springbootinit.model.entity.InterfaceInfo;
-import com.ershi.springbootinit.model.entity.User;
 import com.ershi.springbootinit.model.enums.InterfaceStatusEnum;
 import com.ershi.springbootinit.model.vo.InterfaceInfoVO;
 import com.ershi.springbootinit.service.InterfaceInfoService;

@@ -6,7 +6,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ershi.springbootinit.mapper.PostThumbMapper">
 
-    <resultMap id="BaseResultMap" type="com.ershi.springbootinit.model.entity.PostThumb">
+    <resultMap id="BaseResultMap" type="com.ershi.common.model.entity.PostThumb">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="postId" column="postId" jdbcType="BIGINT"/>
             <result property="userId" column="userId" jdbcType="BIGINT"/>

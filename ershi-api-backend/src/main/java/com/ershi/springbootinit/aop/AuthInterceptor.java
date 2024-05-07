@@ -1,9 +1,9 @@
 package com.ershi.springbootinit.aop;
 
+import com.ershi.common.model.entity.User;
 import com.ershi.springbootinit.annotation.AuthCheck;
 import com.ershi.springbootinit.common.ErrorCode;
 import com.ershi.springbootinit.exception.BusinessException;
-import com.ershi.springbootinit.model.entity.User;
 import com.ershi.springbootinit.model.enums.UserRoleEnum;
 import com.ershi.springbootinit.service.UserService;
 import org.apache.commons.lang3.StringUtils;

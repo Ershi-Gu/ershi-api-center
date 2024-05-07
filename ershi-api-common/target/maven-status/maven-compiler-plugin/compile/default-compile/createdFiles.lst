@@ -1,0 +1,9 @@
+com\ershi\common\model\entity\User.class
+com\ershi\common\service\InnerUserService.class
+com\ershi\common\model\entity\UserToInterfaceInfo.class
+com\ershi\common\model\entity\PostThumb.class
+com\ershi\common\service\InnerInterfaceInfoService.class
+com\ershi\common\model\entity\InterfaceInfo.class
+com\ershi\common\model\entity\Post.class
+com\ershi\common\service\InnerUserToInterfaceInfoService.class
+com\ershi\common\model\entity\PostFavour.class

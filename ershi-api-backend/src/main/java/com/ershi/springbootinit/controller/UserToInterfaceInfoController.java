@@ -1,6 +1,8 @@
 package com.ershi.springbootinit.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ershi.common.model.entity.User;
+import com.ershi.common.model.entity.UserToInterfaceInfo;
 import com.ershi.springbootinit.annotation.AuthCheck;
 import com.ershi.springbootinit.common.BaseResponse;
 import com.ershi.springbootinit.common.DeleteRequest;
@@ -12,8 +14,6 @@ import com.ershi.springbootinit.exception.ThrowUtils;
 import com.ershi.springbootinit.model.dto.usertointerfaceinfo.UserToInterfaceInfoAddRequest;
 import com.ershi.springbootinit.model.dto.usertointerfaceinfo.UserToInterfaceInfoQueryRequest;
 import com.ershi.springbootinit.model.dto.usertointerfaceinfo.UserToInterfaceInfoUpdateRequest;
-import com.ershi.springbootinit.model.entity.User;
-import com.ershi.springbootinit.model.entity.UserToInterfaceInfo;
 import com.ershi.springbootinit.model.vo.UserToInterfaceInfoVO;
 import com.ershi.springbootinit.service.UserService;
 import com.ershi.springbootinit.service.UserToInterfaceInfoService;

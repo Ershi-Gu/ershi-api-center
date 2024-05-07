@@ -1,6 +1,5 @@
 package com.ershi.springbootinit.service;
 
-import com.ershi.springbootinit.model.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -1,11 +1,11 @@
 package com.ershi.springbootinit.controller;
 
+import com.ershi.common.model.entity.User;
 import com.ershi.springbootinit.common.BaseResponse;
 import com.ershi.springbootinit.common.ErrorCode;
 import com.ershi.springbootinit.common.ResultUtils;
 import com.ershi.springbootinit.exception.BusinessException;
 import com.ershi.springbootinit.model.dto.postthumb.PostThumbAddRequest;
-import com.ershi.springbootinit.model.entity.User;
 import com.ershi.springbootinit.service.PostThumbService;
 import com.ershi.springbootinit.service.UserService;
 import lombok.extern.slf4j.Slf4j;

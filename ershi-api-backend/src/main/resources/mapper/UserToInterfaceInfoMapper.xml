@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ershi.springbootinit.mapper.UserToInterfaceInfoMapper">
 
-    <resultMap id="BaseResultMap" type="com.ershi.springbootinit.model.entity.UserToInterfaceInfo">
+    <resultMap id="BaseResultMap" type="com.ershi.common.model.entity.UserToInterfaceInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="userId" column="userId" jdbcType="BIGINT"/>
             <result property="interfaceInfoId" column="interfaceInfoId" jdbcType="BIGINT"/>

@@ -2,7 +2,7 @@ package com.ershi.springbootinit.model.dto.post;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
-import com.ershi.springbootinit.model.entity.Post;
+import com.ershi.common.model.entity.Post;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;

@@ -1,8 +1,8 @@
 package com.ershi.springbootinit.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ershi.springbootinit.model.entity.PostThumb;
-import com.ershi.springbootinit.model.entity.User;
+import com.ershi.common.model.entity.PostThumb;
+import com.ershi.common.model.entity.User;
 
 /**
  * 帖子点赞服务

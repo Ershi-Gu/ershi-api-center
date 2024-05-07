@@ -1,6 +1,5 @@
 package com.ershi.springbootinit.mapper;
 
-import com.ershi.springbootinit.model.entity.Post;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
