@@ -8,6 +8,7 @@ import java.util.Map;
 
 /**
  * 请求参数处理工具
+ *
  * @author Ershi
  * @date 2024/05/07
  */
@@ -15,6 +16,7 @@ public class ParameterProcessor {
 
     /**
      * 处理 json 字符串的换行符号
+     *
      * @param jsonString
      * @return {@link JsonNode}
      * @throws Exception
@@ -31,6 +33,7 @@ public class ParameterProcessor {
     }
 
     public static Map<String, String> jsonToMap(String jsonString) throws Exception {
+
         // 创建ObjectMapper对象
         ObjectMapper objectMapper = new ObjectMapper();
 

@@ -50,6 +50,11 @@ public class InterfaceInfoVO {
     private String requestParams;
 
     /**
+     *请求参数示例
+     */
+    private String requestParamsExample;
+
+    /**
      * 请求头
      */
     private String requestHeader;
