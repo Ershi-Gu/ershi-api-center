@@ -76,6 +76,7 @@ public class ErshiClient {
         map.put("timestamp", String.valueOf(System.currentTimeMillis() / 1000));
         // 通过请求头参数和密钥加密成签名
         map.put("sign", SignUtils.getSign(map, secretKey));
+        map.put("id", "1");
         return map;
     }
 }

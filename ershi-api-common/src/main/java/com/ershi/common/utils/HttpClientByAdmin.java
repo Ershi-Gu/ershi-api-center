@@ -7,6 +7,7 @@ import java.util.Map;
 
 /**
  * HTTP 请求工具
+ *
  * @author Ershi
  * @date 2024/05/07
  */
@@ -30,9 +31,9 @@ public class HttpClientByAdmin {
     public String byPost(String paramJsonStr) {
         //可以单独传入http参数，这样参数会自动做URL编码，拼接在URL中
         String result = HttpRequest.post(targetHost + targetUrl)
-                .body(paramJsonStr).
+                .body(paramJsonStr)
                 // 将参数和签名打包通过请求头传递
-                execute().body();
+                .execute().body();
         return result;
     }
 }

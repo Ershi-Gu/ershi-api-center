@@ -1,4 +1,4 @@
-package com.ershi.ershiapigateway.globalfilter;
+package com.ershi.ershiapigateway.filter;
 
 
 import com.alibaba.fastjson.JSON;
@@ -11,12 +11,15 @@ import com.ershi.common.model.entity.User;
 import com.ershi.common.service.InnerInterfaceInfoService;
 import com.ershi.common.service.InnerUserService;
 import com.ershi.ershiapiclientsdk.utils.SignUtils;
+import com.ershi.ershiapigateway.exception.BusinessException;
+import com.ershi.ershiapigateway.exception.ErrorCode;
 import com.ershi.ershiapigateway.globalmodel.TotalInterfaceInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.route.Route;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
@@ -25,18 +28,22 @@ import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR;
 
 
 /**
@@ -55,6 +62,11 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
     // todo 读取外部资源，编写ip白名单
     private static final List<String> IP_WHITE_LIST = Arrays.asList("127.0.0.1");
 
+    /**
+     * 链接头
+     */
+    private static final String HTTP_PROTOCOL = "http://";
+
     @DubboReference
     private InnerUserService innerUserService;
 
@@ -66,18 +78,19 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        ServerHttpResponse response = exchange.getResponse();
+
         //1. 记录请求的日志
         ServerHttpRequest request = exchange.getRequest();
-        log.info("请求唯一标识: " + request.getId());
+        String requestId = request.getId();
         String url = request.getPath().value();
-        log.info("请求路径: " + url);
         String method = request.getMethod().toString();
-        log.info("请求方法: " + method);
-        log.info("请求参数: " + request.getQueryParams());
         String sourceAddress = request.getLocalAddress().getHostString();
+        log.info("请求唯一标识: " + requestId);
+        log.info("请求路径: " + url);
+        log.info("请求方法: " + method);
+        log.info("请求参数: ");
         log.info("请求来源地址: " + sourceAddress);
-
-        ServerHttpResponse response = exchange.getResponse();
 
         //2. 黑白名单
         // todo 黑白名单完善
@@ -92,10 +105,9 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         String nonce = headers.getFirst("nonce");
         String timestamp = headers.getFirst("timestamp");
 
-        // 提交时间和当前时间不超过 5 分钟
-        Long currentTime = System.currentTimeMillis() / 1000;
-        Long FIVE_MINUTES = 60 * 5L;
-        if (currentTime - Long.parseLong(timestamp) > FIVE_MINUTES) {
+        long currentTime = System.currentTimeMillis() / 1000;
+        long FIVE_MINUTES = 60 * 5L;
+        if (timestamp == null || "".equals(timestamp) || currentTime - Long.parseLong(timestamp) > FIVE_MINUTES) {
             return handlerNoAuth(response);
         }
 
@@ -104,13 +116,11 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         try {
             invokeUser = innerUserService.getInvokeUser(accessKey);
         } catch (Exception e) {
-            // todo 继续抽取公共模块、例如 ErrorCode
-            log.error("getInvokeUser error = ", e);
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "查询请求用户异常");
         }
         if (invokeUser == null) {
             return handlerNoAuth(response);
         }
-        // 获取对应 sk
         String secreteKey = invokeUser.getSecreteKey();
         HashMap<String, String> map = new HashMap<>();
         map.put("accessKey", accessKey);
@@ -122,16 +132,41 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
             return handlerNoAuth(response);
         }
 
-        //4. 请求的模拟接口是否存在
-        // todo 从数据中查询模拟接口是否存在，以及请求方法是否匹配 (还可以检验请求参数)
-//        innerInterfaceInfoService.getInvokeInterfaceInfo()
+        //4. 校验请求的模拟接口是否存在
+        Map<String, InterfaceInfo> interfaceInfoMap = totalInterfaceInfo.getInterfaceInfoMap();
+        String id = headers.getFirst("id");
+        InterfaceInfo interfaceInfo = interfaceInfoMap.get(id);
+        if (interfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "接口不存在");
+        }
+
+
         //5. 请求参数校验
         // todo 有参校验
 
-        //6. 请求转发、调用模拟接口
+
+        //6. 动态路由转发至目标接口
+        String targetHost = interfaceInfo.getHost();
+
+        URI newUrl = null;
+        try {
+            newUrl = new URI(HTTP_PROTOCOL + targetHost + url);
+        } catch (URISyntaxException e) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "URI 构建异常");
+        }
+
+        Route route = exchange.getAttribute(GATEWAY_ROUTE_ATTR);
+        if (route == null){
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
+        }
+        Route newRoute = Route.async().asyncPredicate(route.getPredicate())
+                .filters(route.getFilters()).id(route.getId()).order(route.getOrder()).uri(newUrl).build();
+        exchange.getAttributes().put(GATEWAY_ROUTE_ATTR, newRoute);
+
+        // todo 检查该用户是否还有调用次数
+
         //7. 响应日志
         //8. 调用成功，统计调用次数 + 1
-        // todo 检查该用户是否还有调用次数
         return handleResponse(exchange, chain);
     }
 

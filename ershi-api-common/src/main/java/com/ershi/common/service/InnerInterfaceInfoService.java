@@ -11,13 +11,6 @@ import java.util.List;
  */
 public interface InnerInterfaceInfoService {
 
-    /**
-     * 查询请求接口是否存在
-     * @param path 请求路径
-     * @param method 请求方法 POST / GET
-     * @return {@link InterfaceInfo}
-     */
-    InterfaceInfo getInvokeInterfaceInfo(String url, String method);
 
     /**
      * 获取所有接口信息

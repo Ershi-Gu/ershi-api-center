@@ -19,19 +19,6 @@ public class InnerInterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapp
         implements InnerInterfaceInfoService {
 
     @Override
-    public InterfaceInfo getInvokeInterfaceInfo(String url, String method) {
-        if (StringUtils.isAnyBlank(url, method)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-
-        QueryWrapper<InterfaceInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("url", url);
-        queryWrapper.eq("method", method);
-        return this.getOne(queryWrapper);
-    }
-
-
-    @Override
     public List<InterfaceInfo> getAllInterfaceInfo() {
         return this.list();
     }

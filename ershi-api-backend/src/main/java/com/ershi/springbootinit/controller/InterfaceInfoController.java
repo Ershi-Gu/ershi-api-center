@@ -3,6 +3,7 @@ package com.ershi.springbootinit.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ershi.common.model.entity.InterfaceInfo;
 import com.ershi.common.model.entity.User;
+import com.ershi.common.utils.HttpClient;
 import com.ershi.common.utils.HttpClientByAdmin;
 import com.ershi.common.utils.ParameterProcessor;
 import com.ershi.ershiapiclientsdk.client.ErshiClient;
@@ -235,12 +236,11 @@ public class InterfaceInfoController {
         if (StringUtils.isAnyBlank(targetHost, targetUrl)) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "接口地址错误");
         }
-        // 获取示例参数
         String requestParamsExample = interfaceInfo.getRequestParamsExample();
         String result = null;
         try {
             HttpClientByAdmin httpClientByAdmin = new HttpClientByAdmin(targetHost, targetUrl);
-            if ("GET".equals(interfaceInfo.getMethod())){
+            if ("GET".equals(interfaceInfo.getMethod())) {
                 result = httpClientByAdmin.byGet(ParameterProcessor.jsonToMap(requestParamsExample));
             } else if ("POST".equals(interfaceInfo.getMethod())) {
                 result = httpClientByAdmin.byPost(requestParamsExample);
@@ -248,8 +248,6 @@ public class InterfaceInfoController {
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");
         }
-
-        // todo 将接口异常检测状态码识别提取出来
         if (StringUtils.isBlank(result) || result.contains("status=404") || result.contains("status=500")) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");
         }
@@ -332,20 +330,29 @@ public class InterfaceInfoController {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口状态异常");
         }
 
-        // todo 根据传入的接口信息灵活调用接口
-        Gson gson = new Gson();
-        com.ershi.ershiapiclientsdk.model.User user =
-                gson.fromJson(userRequestParams, com.ershi.ershiapiclientsdk.model.User.class);
-
-        // 获取密钥
+        // 请求网关转发至对应接口
+        String targetUrl = interfaceInfo.getUrl();
         User loginUser = userService.getLoginUser(request);
         String accessKey = loginUser.getAccessKey();
         String secreteKey = loginUser.getSecreteKey();
 
-        ErshiClient tempClient = new ErshiClient(accessKey, secreteKey);
-        String res = tempClient.getNameByPost(user);
+        String result = null;
+        try {
+            HttpClient httpClient = new HttpClient(targetUrl, accessKey, secreteKey);
+            if ("GET".equals(interfaceInfo.getMethod())) {
+                result = httpClient.byGet(ParameterProcessor.jsonToMap(userRequestParams), id.toString());
+            } else if ("POST".equals(interfaceInfo.getMethod())) {
+                result = httpClient.byPost(userRequestParams, id.toString());
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");
+        }
 
-        return ResultUtils.success(res);
+        if (StringUtils.isBlank(result) || result.contains("status=404") || result.contains("status=500")) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");
+        }
+
+        return ResultUtils.success(result);
     }
 
     // endregion
