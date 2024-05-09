@@ -1,12 +1,12 @@
 package com.ershi.springbootinit.controller;
 
 import cn.hutool.core.io.FileUtil;
+import com.ershi.common.exception.BusinessException;
+import com.ershi.common.exception.ErrorCode;
 import com.ershi.common.model.entity.User;
-import com.ershi.springbootinit.common.BaseResponse;
-import com.ershi.springbootinit.common.ErrorCode;
-import com.ershi.springbootinit.common.ResultUtils;
+import com.ershi.common.response.BaseResponse;
+import com.ershi.common.utils.ResultUtils;
 import com.ershi.springbootinit.constant.FileConstant;
-import com.ershi.springbootinit.exception.BusinessException;
 import com.ershi.springbootinit.manager.CosManager;
 import com.ershi.springbootinit.model.dto.file.UploadFileRequest;
 import com.ershi.springbootinit.model.enums.FileUploadBizEnum;
@@ -51,7 +51,7 @@ public class FileController {
      */
     @PostMapping("/upload")
     public BaseResponse<String> uploadFile(@RequestPart("file") MultipartFile multipartFile,
-            UploadFileRequest uploadFileRequest, HttpServletRequest request) {
+                                           UploadFileRequest uploadFileRequest, HttpServletRequest request) {
         String biz = uploadFileRequest.getBiz();
         FileUploadBizEnum fileUploadBizEnum = FileUploadBizEnum.getEnumByValue(biz);
         if (fileUploadBizEnum == null) {

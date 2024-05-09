@@ -1,13 +1,13 @@
 package com.ershi.springbootinit.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ershi.common.exception.BusinessException;
+import com.ershi.common.exception.ErrorCode;
 import com.ershi.common.model.entity.Post;
 import com.ershi.common.model.entity.User;
-import com.ershi.springbootinit.common.BaseResponse;
-import com.ershi.springbootinit.common.ErrorCode;
-import com.ershi.springbootinit.common.ResultUtils;
-import com.ershi.springbootinit.exception.BusinessException;
-import com.ershi.springbootinit.exception.ThrowUtils;
+import com.ershi.common.response.BaseResponse;
+import com.ershi.common.utils.ResultUtils;
+import com.ershi.common.utils.ThrowUtils;
 import com.ershi.springbootinit.model.dto.post.PostQueryRequest;
 import com.ershi.springbootinit.model.dto.postfavour.PostFavourAddRequest;
 import com.ershi.springbootinit.model.dto.postfavour.PostFavourQueryRequest;
@@ -53,7 +53,7 @@ public class PostFavourController {
      */
     @PostMapping("/")
     public BaseResponse<Integer> doPostFavour(@RequestBody PostFavourAddRequest postFavourAddRequest,
-            HttpServletRequest request) {
+                                              HttpServletRequest request) {
         if (postFavourAddRequest == null || postFavourAddRequest.getPostId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

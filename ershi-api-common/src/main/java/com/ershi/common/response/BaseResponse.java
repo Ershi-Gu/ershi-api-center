@@ -1,5 +1,6 @@
-package com.ershi.springbootinit.common;
+package com.ershi.common.response;
 
+import com.ershi.common.exception.ErrorCode;
 import lombok.Data;
 
 import java.io.Serializable;

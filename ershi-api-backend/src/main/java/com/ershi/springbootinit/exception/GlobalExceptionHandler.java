@@ -1,8 +1,9 @@
 package com.ershi.springbootinit.exception;
 
-import com.ershi.springbootinit.common.BaseResponse;
-import com.ershi.springbootinit.common.ErrorCode;
-import com.ershi.springbootinit.common.ResultUtils;
+import com.ershi.common.exception.BusinessException;
+import com.ershi.common.exception.ErrorCode;
+import com.ershi.common.response.BaseResponse;
+import com.ershi.common.utils.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

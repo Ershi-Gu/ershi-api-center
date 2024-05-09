@@ -1,6 +1,8 @@
-package com.ershi.springbootinit.exception;
+package com.ershi.common.utils;
 
-import com.ershi.springbootinit.common.ErrorCode;
+
+import com.ershi.common.exception.BusinessException;
+import com.ershi.common.exception.ErrorCode;
 
 /**
  * 抛异常工具类

@@ -1,6 +1,4 @@
-package com.ershi.springbootinit.exception;
-
-import com.ershi.springbootinit.common.ErrorCode;
+package com.ershi.common.exception;
 
 /**
  * 自定义异常类

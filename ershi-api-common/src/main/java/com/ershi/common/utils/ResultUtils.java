@@ -1,4 +1,7 @@
-package com.ershi.springbootinit.common;
+package com.ershi.common.utils;
+
+import com.ershi.common.response.BaseResponse;
+import com.ershi.common.exception.ErrorCode;
 
 /**
  * 返回工具类

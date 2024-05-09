@@ -1,4 +1,4 @@
-package com.ershi.springbootinit.common;
+package com.ershi.common.exception;
 
 /**
  * 自定义错误码

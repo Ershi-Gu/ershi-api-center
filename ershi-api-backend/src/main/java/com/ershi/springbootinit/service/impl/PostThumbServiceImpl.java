@@ -2,11 +2,11 @@ package com.ershi.springbootinit.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ershi.common.exception.BusinessException;
+import com.ershi.common.exception.ErrorCode;
 import com.ershi.common.model.entity.Post;
 import com.ershi.common.model.entity.PostThumb;
 import com.ershi.common.model.entity.User;
-import com.ershi.springbootinit.common.ErrorCode;
-import com.ershi.springbootinit.exception.BusinessException;
 import com.ershi.springbootinit.mapper.PostThumbMapper;
 import com.ershi.springbootinit.service.PostService;
 import com.ershi.springbootinit.service.PostThumbService;

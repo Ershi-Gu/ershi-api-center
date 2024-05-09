@@ -1,17 +1,16 @@
 package com.ershi.springbootinit.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ershi.common.exception.BusinessException;
+import com.ershi.common.exception.ErrorCode;
 import com.ershi.common.model.entity.InterfaceInfo;
 import com.ershi.common.model.entity.User;
-import com.ershi.common.utils.HttpClient;
-import com.ershi.common.utils.HttpClientByAdmin;
-import com.ershi.common.utils.ParameterProcessor;
+import com.ershi.common.response.BaseResponse;
+import com.ershi.common.utils.*;
 import com.ershi.ershiapiclientsdk.client.ErshiClient;
 import com.ershi.springbootinit.annotation.AuthCheck;
 import com.ershi.springbootinit.common.*;
 import com.ershi.springbootinit.constant.UserConstant;
-import com.ershi.springbootinit.exception.BusinessException;
-import com.ershi.springbootinit.exception.ThrowUtils;
 import com.ershi.springbootinit.model.dto.interfaceinfo.InterfaceInfoAddRequest;
 import com.ershi.springbootinit.model.dto.interfaceinfo.InterfaceInfoInvokeRequest;
 import com.ershi.springbootinit.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
@@ -23,6 +22,7 @@ import com.ershi.springbootinit.service.UserService;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,9 +46,6 @@ public class InterfaceInfoController {
     @Resource
     private UserService userService;
 
-
-    @Resource
-    private ErshiClient ershiClient;
 
     // region 接口增删改查
 
@@ -248,9 +245,6 @@ public class InterfaceInfoController {
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");
         }
-        if (StringUtils.isBlank(result) || result.contains("status=404") || result.contains("status=500")) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");
-        }
 
         // 修改 InterfaceInfo 的接口状态为 ONLINE
         InterfaceInfoUpdateRequest interfaceInfoUpdateRequest = new InterfaceInfoUpdateRequest();
@@ -345,10 +339,6 @@ public class InterfaceInfoController {
                 result = httpClient.byPost(userRequestParams, id.toString());
             }
         } catch (Exception e) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");
-        }
-
-        if (StringUtils.isBlank(result) || result.contains("status=404") || result.contains("status=500")) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口无法访问");
         }
 

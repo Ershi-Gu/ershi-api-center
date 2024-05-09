@@ -70,4 +70,5 @@ public class HttpClient {
         map.put("id", interfaceInfoId);
         return map;
     }
+
 }

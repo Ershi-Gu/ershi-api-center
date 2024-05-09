@@ -1,10 +1,10 @@
 package com.ershi.springbootinit.controller;
 
+import com.ershi.common.exception.BusinessException;
+import com.ershi.common.exception.ErrorCode;
 import com.ershi.common.model.entity.User;
-import com.ershi.springbootinit.common.BaseResponse;
-import com.ershi.springbootinit.common.ErrorCode;
-import com.ershi.springbootinit.common.ResultUtils;
-import com.ershi.springbootinit.exception.BusinessException;
+import com.ershi.common.response.BaseResponse;
+import com.ershi.common.utils.ResultUtils;
 import com.ershi.springbootinit.model.dto.postthumb.PostThumbAddRequest;
 import com.ershi.springbootinit.service.PostThumbService;
 import com.ershi.springbootinit.service.UserService;
@@ -43,7 +43,7 @@ public class PostThumbController {
      */
     @PostMapping("/")
     public BaseResponse<Integer> doThumb(@RequestBody PostThumbAddRequest postThumbAddRequest,
-            HttpServletRequest request) {
+                                         HttpServletRequest request) {
         if (postThumbAddRequest == null || postThumbAddRequest.getPostId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
