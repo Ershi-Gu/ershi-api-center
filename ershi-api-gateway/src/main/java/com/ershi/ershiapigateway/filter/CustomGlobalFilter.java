@@ -10,9 +10,10 @@ import com.ershi.common.model.entity.InterfaceInfo;
 import com.ershi.common.model.entity.User;
 import com.ershi.common.service.InnerInterfaceInfoService;
 import com.ershi.common.service.InnerUserService;
+import com.ershi.common.service.InnerUserToInterfaceInfoService;
 import com.ershi.ershiapiclientsdk.utils.SignUtils;
-import com.ershi.ershiapigateway.exception.BusinessException;
-import com.ershi.ershiapigateway.exception.ErrorCode;
+import com.ershi.common.exception.BusinessException;
+import com.ershi.common.exception.ErrorCode;
 import com.ershi.ershiapigateway.globalmodel.TotalInterfaceInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -73,6 +74,9 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
     @DubboReference
     private InnerInterfaceInfoService innerInterfaceInfoService;
 
+    @DubboReference
+    private InnerUserToInterfaceInfoService innerUserToInterfaceInfoService;
+
     @Resource
     private TotalInterfaceInfo totalInterfaceInfo;
 
@@ -108,7 +112,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         long currentTime = System.currentTimeMillis() / 1000;
         long FIVE_MINUTES = 60 * 5L;
         if (timestamp == null || "".equals(timestamp) || currentTime - Long.parseLong(timestamp) > FIVE_MINUTES) {
-            return handlerNoAuth(response);
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
         }
 
         String sign = headers.getFirst("sign");
@@ -116,10 +120,10 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         try {
             invokeUser = innerUserService.getInvokeUser(accessKey);
         } catch (Exception e) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "查询请求用户异常");
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "请求用户异常");
         }
         if (invokeUser == null) {
-            return handlerNoAuth(response);
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
         }
         String secreteKey = invokeUser.getSecreteKey();
         HashMap<String, String> map = new HashMap<>();
@@ -129,14 +133,14 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         map.put("timestamp", timestamp);
         String serverSign = SignUtils.getSign(map, secreteKey);
         if (sign == null || !sign.equals(serverSign)) {
-            return handlerNoAuth(response);
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
         }
 
         //4. 校验请求的模拟接口是否存在
         Map<String, InterfaceInfo> interfaceInfoMap = totalInterfaceInfo.getInterfaceInfoMap();
         String id = headers.getFirst("id");
-        InterfaceInfo interfaceInfo = interfaceInfoMap.get(id);
-        if (interfaceInfo == null) {
+        InterfaceInfo targetInterfaceInfo = interfaceInfoMap.get(id);
+        if (targetInterfaceInfo == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "接口不存在");
         }
 
@@ -146,7 +150,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
 
         //6. 动态路由转发至目标接口
-        String targetHost = interfaceInfo.getHost();
+        String targetHost = targetInterfaceInfo.getHost();
 
         URI newUrl = null;
         try {
@@ -156,49 +160,53 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         }
 
         Route route = exchange.getAttribute(GATEWAY_ROUTE_ATTR);
-        if (route == null){
+        if (route == null) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR);
         }
         Route newRoute = Route.async().asyncPredicate(route.getPredicate())
                 .filters(route.getFilters()).id(route.getId()).order(route.getOrder()).uri(newUrl).build();
         exchange.getAttributes().put(GATEWAY_ROUTE_ATTR, newRoute);
 
-        // todo 检查该用户是否还有调用次数
+        // 7. 检查用户是否还有调用次数
+        if (!innerUserToInterfaceInfoService.checkInvokeCount(invokeUser, targetInterfaceInfo)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "调用次数不足");        }
 
-        //7. 响应日志
-        //8. 调用成功，统计调用次数 + 1
-        return handleResponse(exchange, chain);
+        // 8. 放行请求
+        return handleResponse(invokeUser, targetInterfaceInfo, exchange, chain);
     }
 
 
     /**
-     * 处理响应
+     * 异步处理响应
      *
      * @param exchange
      * @param chain
      * @return {@link Mono}<{@link Void}>
      */
-    public Mono<Void> handleResponse(ServerWebExchange exchange, GatewayFilterChain chain) {
+    public Mono<Void> handleResponse(User invokeUser, InterfaceInfo targetInterfaceInfo,
+                                     ServerWebExchange exchange, GatewayFilterChain chain) {
         try {
             ServerHttpResponse originalResponse = exchange.getResponse();
             // 缓存数据
             DataBufferFactory bufferFactory = originalResponse.bufferFactory();
-            HttpStatus statusCode = originalResponse.getStatusCode();
-            if (statusCode != HttpStatus.OK) {
-                // todo 异常处理，不能暴露服务器内部信息
-                return chain.filter(exchange);//降级处理返回数据
-            }
+
             // 装饰、增强能力
             ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(originalResponse) {
-                // 等调用完转发的接口后才会执行
+
+                // 异步方法-等调用完转发的接口后才会执行
                 @Override
+                // 对返回 Response 进行二次处理
                 public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
+                    //7. 响应日志
+                    //8. 调用成功，统计调用次数 + 1
                     if (body instanceof Flux) {
                         Flux<? extends DataBuffer> fluxBody = Flux.from(body);
 
                         // 往返回值里面写数据 (有返回说明调用成功)
                         return super.writeWith(fluxBody.buffer().map(dataBuffers -> {
-                            // todo 8. 调用成功，统计调用次数
+
+                            // 统计调用次数
+                            innerUserToInterfaceInfoService.invokeCount(invokeUser.getId(), targetInterfaceInfo.getId());
 
                             // 合并多个流集合，解决返回体分段传输
                             DataBufferFactory dataBufferFactory = new DefaultDataBufferFactory();
@@ -244,6 +252,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         }
     }
 
+
     //返回统一的JSON日期数据 2024-02-23 11:00， null转空字符串
     private String modifyBody(String jsonStr) {
         JSONObject json = JSON.parseObject(jsonStr, Feature.AllowISO8601DateFormat);
@@ -268,4 +277,11 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         response.setStatusCode(HttpStatus.FORBIDDEN);
         return response.setComplete();
     }
+
+
+    public Mono<Void> handleInvokeError(ServerHttpResponse response) {
+        response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
+        return response.setComplete();
+    }
+
 }
