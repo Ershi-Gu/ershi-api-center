@@ -4,6 +4,8 @@ import com.ershi.common.model.entity.InterfaceInfo;
 import com.ershi.common.service.InnerInterfaceInfoService;
 import lombok.Data;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +15,7 @@ import java.util.Map;
 
 /**
  * 用于缓存所有接口信息到网关
+ *
  * @author Ershi
  * @date 2024/05/07
  */
@@ -25,6 +28,8 @@ public class TotalInterfaceInfo {
     private InnerInterfaceInfoService innerInterfaceInfoService;
 
     @PostConstruct
+    // 每 30 秒执行一次
+    @Scheduled(cron = "0/30 * * * * ? ")
     public void init() {
         //系统启动中。。。加载 interfaceInfoMap
         List<InterfaceInfo> allInterfaceInfo = innerInterfaceInfoService.getAllInterfaceInfo();
@@ -33,7 +38,7 @@ public class TotalInterfaceInfo {
         }
     }
 
-    public Map<String, InterfaceInfo> getInterfaceInfoMap(){
+    public Map<String, InterfaceInfo> getInterfaceInfoMap() {
         return interfaceInfoMap;
     }
 
