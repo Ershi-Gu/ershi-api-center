@@ -32,10 +32,6 @@
         </dependency>
         <dependency>
             <groupId>com.ershi</groupId>
-            <artifactId>ershi-api-client-sdk</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.ershi</groupId>
             <artifactId>ershi-api-common</artifactId>
         </dependency>
         <dependency>

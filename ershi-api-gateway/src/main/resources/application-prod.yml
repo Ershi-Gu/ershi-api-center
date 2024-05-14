@@ -1,14 +1,18 @@
 server:
-  port: 9091
+  port: 8082
 
 spring:
   cloud:
     gateway:
       routes:
-        - id: api_route
-          uri: http://localhost:8081 # 默认转发地址（需要实现动态路由，根据接口信息转发到对应地址）
+        - id: host_api_route
+          uri: http://api-interface.guershi.cn:8083 # 默认转发地址（需要实现动态路由，根据接口信息转发到对应地址）
           predicates:
-            - Host=localhost:9091 # 匹配请求网关的所有路由
+            - Host=api-gateway.guershi.cn:8082
+        - id: path_api_route
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/**
       default-filters: # 流量染色
         - AddResponseHeader=ershiapi, ershiapi
 
@@ -26,5 +30,5 @@ dubbo:
     name: dubbo
     port: -1 # 随机分配协议端口
   registry:
-    address: nacos://localhost:8848
+    address: nacos://nacos:8848
 

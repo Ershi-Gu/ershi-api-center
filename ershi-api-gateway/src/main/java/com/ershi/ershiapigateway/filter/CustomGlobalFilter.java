@@ -11,9 +11,9 @@ import com.ershi.common.model.entity.User;
 import com.ershi.common.service.InnerInterfaceInfoService;
 import com.ershi.common.service.InnerUserService;
 import com.ershi.common.service.InnerUserToInterfaceInfoService;
-import com.ershi.ershiapiclientsdk.utils.SignUtils;
 import com.ershi.common.exception.BusinessException;
 import com.ershi.common.exception.ErrorCode;
+import com.ershi.common.utils.SignUtils;
 import com.ershi.ershiapigateway.globalmodel.TotalInterfaceInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -96,11 +96,11 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         log.info("请求参数: ");
         log.info("请求来源地址: " + sourceAddress);
 
-        //2. 黑白名单
-        // todo 黑白名单完善
-        if (!IP_WHITE_LIST.contains(sourceAddress)) {
-            return handlerNoAuth(response);
-        }
+//        //2. 黑白名单
+//        // todo 黑白名单完善
+//        if (!IP_WHITE_LIST.contains(sourceAddress)) {
+//            return handlerNoAuth(response);
+//        }
 
         //3. 用户鉴权（判断 ak / sk 是否合法）
         HttpHeaders headers = request.getHeaders();

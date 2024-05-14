@@ -49,6 +49,7 @@ public class GlobalErrorWebExceptionHandler implements ErrorWebExceptionHandler 
                 log.info("请求异常: " + ex.getMessage());
 
                 //返回响应结果
+                // todo 返回结果处理，过滤掉ip地址
                 return bufferFactory.wrap(objectMapper.
                         writeValueAsBytes(ResultUtils.error(ErrorCode.OPERATION_ERROR, ex.getMessage())));
             } catch (JsonProcessingException e) {

@@ -5,10 +5,14 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: api_route
+        - id: host_api_route
           uri: http://localhost:8081 # 默认转发地址（需要实现动态路由，根据接口信息转发到对应地址）
           predicates:
             - Host=localhost:9091 # 匹配请求网关的所有路由
+        - id: path_api_route
+          uri: http://localhost:8081 # 默认转发地址（需要实现动态路由，根据接口信息转发到对应地址）
+          predicates:
+            - Path=/api/** # 匹配请求网关的所有路由
       default-filters: # 流量染色
         - AddResponseHeader=ershiapi, ershiapi
 
