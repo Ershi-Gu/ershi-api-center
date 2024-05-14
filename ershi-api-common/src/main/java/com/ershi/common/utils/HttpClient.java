@@ -15,8 +15,8 @@ import java.util.Map;
  */
 public class HttpClient {
 
-    // todo 从资源文件中读取网关地址，不写死
-    private static final String GATEWAY_HOST = "http://localhost:9091";
+    // todo 配置网关地址
+    private static final String GATEWAY_HOST = "";
 
     private String targetUrl = "";
 

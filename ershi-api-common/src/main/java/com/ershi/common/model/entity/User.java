@@ -16,6 +16,9 @@ import java.util.Date;
 @Data
 public class User implements Serializable {
 
+    private static final String DEFAULT_USER_NAME = "man";
+    private static final String DEFAULT_USER_Avatar = "https://cdn.xxhzm.cn/images/head/0554855777.jpg";
+
     /**
      * id
      */
@@ -45,12 +48,12 @@ public class User implements Serializable {
     /**
      * 用户昵称
      */
-    private String userName;
+    private String userName = DEFAULT_USER_NAME;
 
     /**
      * 用户头像
      */
-    private String userAvatar;
+    private String userAvatar = DEFAULT_USER_Avatar;
 
     /**
      * 用户简介

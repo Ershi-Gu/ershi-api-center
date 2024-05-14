@@ -2,6 +2,7 @@ package com.ershi.common.service;
 
 import com.ershi.common.model.entity.InterfaceInfo;
 import com.ershi.common.model.entity.User;
+import com.ershi.common.model.entity.UserToInterfaceInfo;
 
 /**
  * 内部处理用户请求接口相关 service
@@ -26,5 +27,13 @@ public interface InnerUserToInterfaceInfoService {
      * @return boolean 次数够用返回 true 否则返回 false
      */
     boolean checkInvokeCount(User invokeUser, InterfaceInfo interfaceInfo);
+
+
+    /**
+     * 检查记录是否存在
+     * @param userToInterfaceInfo
+     * @return boolean
+     */
+    boolean checkLog(UserToInterfaceInfo userToInterfaceInfo);
 
 }

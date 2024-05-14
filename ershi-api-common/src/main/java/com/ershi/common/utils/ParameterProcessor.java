@@ -58,15 +58,4 @@ public class ParameterProcessor {
 
         return resultMap;
     }
-
-    public static void main(String[] args) {
-        try {
-            // 测试方法
-            String jsonString = "{\"name\":\"gyx\",\"age\":\"18\"}";
-            Map<String, String> resultMap = jsonToMap(jsonString);
-            System.out.println("解析后的Map为：" + resultMap);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
