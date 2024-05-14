@@ -7,7 +7,6 @@ import com.ershi.common.model.entity.InterfaceInfo;
 import com.ershi.common.model.entity.User;
 import com.ershi.common.response.BaseResponse;
 import com.ershi.common.utils.*;
-import com.ershi.ershiapiclientsdk.client.ErshiClient;
 import com.ershi.springbootinit.annotation.AuthCheck;
 import com.ershi.springbootinit.common.*;
 import com.ershi.springbootinit.constant.UserConstant;

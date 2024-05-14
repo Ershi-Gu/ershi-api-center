@@ -88,11 +88,6 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
-        <!--引入 ershi-api-client-sdk-->
-        <dependency>
-            <groupId>com.ershi</groupId>
-            <artifactId>ershi-api-clientsdk</artifactId>
-        </dependency>
         <!--引入公共模块-->
         <dependency>
             <groupId>com.ershi</groupId>

@@ -14,24 +14,9 @@ import java.io.Serializable;
 public class UserToInterfaceInfoAddRequest implements Serializable {
 
     /**
-     * 调用用户 id
-     */
-    private Long userId;
-
-    /**
      * 被调用接口 id
      */
     private Long interfaceInfoId;
-
-    /**
-     * 剩余调用次数
-     */
-    private Integer invokeCount;
-
-    /**
-     * 总调用次数
-     */
-    private Integer leftInvokeCount;
 
     private static final long serialVersionUID = 1L;
 }

@@ -37,18 +37,20 @@ public class UserToInterfaceInfoServiceImpl extends ServiceImpl<UserToInterfaceI
 
         Long userId = userToInterfaceInfo.getUserId();
         Long interfaceInfoId = userToInterfaceInfo.getInterfaceInfoId();
-        Integer invokeCount = userToInterfaceInfo.getInvokeCount();
         Integer leftInvokeCount = userToInterfaceInfo.getLeftInvokeCount();
         Integer status = userToInterfaceInfo.getStatus();
 
         // 创建时，所有参数必须非空
         if (add) {
-            if (userToInterfaceInfo.getInterfaceInfoId() <= 0 || userToInterfaceInfo.getUserId() <= 0) {
+            if (userId == null || interfaceInfoId == null || userId <= 0 || interfaceInfoId <= 0) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口或用户不存在");
             }
-        }
-        if (userToInterfaceInfo.getLeftInvokeCount() < 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "剩余次数不能小于 0");
+            if (leftInvokeCount < 0) {
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "剩余次数不能小于 0");
+            }
+            if(status == 1){
+                throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "该用户禁止访问");
+            }
         }
         // todo 有参校验
     }
@@ -104,6 +106,12 @@ public class UserToInterfaceInfoServiceImpl extends ServiceImpl<UserToInterfaceI
         List<UserToInterfaceInfoVO> userToInterfaceInfoVOList = userToInterfaceInfoList.stream().map(UserToInterfaceInfoVO::objToVo).collect(Collectors.toList());
         userToInterfaceInfoVOPage.setRecords(userToInterfaceInfoVOList);
         return userToInterfaceInfoVOPage;
+    }
+
+
+    @Override
+    public boolean addLeftInvokeCount(UserToInterfaceInfo userToInterfaceInfo) {
+        return false;
     }
 }
 

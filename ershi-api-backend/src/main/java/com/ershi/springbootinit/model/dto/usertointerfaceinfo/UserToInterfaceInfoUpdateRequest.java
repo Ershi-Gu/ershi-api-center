@@ -22,11 +22,6 @@ public class UserToInterfaceInfoUpdateRequest implements Serializable {
     private Long id;
 
     /**
-     * 总调用次数
-     */
-    private Integer invokeCount;
-
-    /**
      * 剩余调用次数
      */
     private Integer leftInvokeCount;

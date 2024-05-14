@@ -20,9 +20,9 @@ public class InnerUserToInterfaceInfoServiceImpl extends ServiceImpl<UserToInter
         implements InnerUserToInterfaceInfoService {
 
     @Override
-    public boolean invokeCount(long interfaceInfoId, long userId) {
+    public boolean invokeCount(long userId, long interfaceInfoId) {
         // 参数验证
-        if (interfaceInfoId <= 0 || userId <= 0){
+        if (interfaceInfoId <= 0 || userId <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
 
@@ -44,12 +44,30 @@ public class InnerUserToInterfaceInfoServiceImpl extends ServiceImpl<UserToInter
         queryWrapper.eq("interfaceInfoId", interfaceInfoId);
         UserToInterfaceInfo one = this.getOne(queryWrapper);
 
-        if (one == null){
+        if (one == null) {
             return false;
         }
 
         Integer leftInvokeCount = one.getLeftInvokeCount();
-        if (leftInvokeCount <= 0){
+        if (leftInvokeCount <= 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    @Override
+    public boolean checkLog(UserToInterfaceInfo userToInterfaceInfo) {
+        Long userId = userToInterfaceInfo.getUserId();
+        Long interfaceInfoId = userToInterfaceInfo.getInterfaceInfoId();
+
+        QueryWrapper<UserToInterfaceInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId", userId);
+        queryWrapper.eq("interfaceInfoId", interfaceInfoId);
+        UserToInterfaceInfo one = this.getOne(queryWrapper);
+
+        if (one == null) {
             return false;
         }
 

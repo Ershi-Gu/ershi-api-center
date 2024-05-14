@@ -6,6 +6,7 @@ import com.ershi.common.exception.ErrorCode;
 import com.ershi.common.model.entity.User;
 import com.ershi.common.model.entity.UserToInterfaceInfo;
 import com.ershi.common.response.BaseResponse;
+import com.ershi.common.service.InnerUserToInterfaceInfoService;
 import com.ershi.common.utils.ResultUtils;
 import com.ershi.common.utils.ThrowUtils;
 import com.ershi.springbootinit.annotation.AuthCheck;
@@ -40,6 +41,9 @@ public class UserToInterfaceInfoController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private InnerUserToInterfaceInfoService innerUserToInterfaceInfoService;
+
 
     // region 接口增删改查
 
@@ -51,7 +55,7 @@ public class UserToInterfaceInfoController {
      * @return
      */
     @PostMapping("/add")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+//    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Long> addUserToInterfaceInfo(@RequestBody UserToInterfaceInfoAddRequest userToInterfaceInfoAddRequest,
                                                      HttpServletRequest request) {
         if (userToInterfaceInfoAddRequest == null) {
@@ -60,10 +64,24 @@ public class UserToInterfaceInfoController {
         UserToInterfaceInfo userToInterfaceInfo = new UserToInterfaceInfo();
         BeanUtils.copyProperties(userToInterfaceInfoAddRequest, userToInterfaceInfo);
 
-        // 参数校验
-        userToInterfaceInfoService.validUserToInterfaceInfo(userToInterfaceInfo, true);
+        // 获取当前登录用户信息
         User loginUser = userService.getLoginUser(request);
         userToInterfaceInfo.setUserId(loginUser.getId());
+
+        // 默认添加 10 次调用次数
+        // todo 修改为动态添加次数
+        userToInterfaceInfo.setLeftInvokeCount(10);
+
+        userToInterfaceInfo.setStatus(0);
+
+        // 参数校验
+        userToInterfaceInfoService.validUserToInterfaceInfo(userToInterfaceInfo, true);
+
+        // 检查是否已经存在记录, 则不允许创建
+        if (innerUserToInterfaceInfoService.checkLog(userToInterfaceInfo)) {
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "申请次数已满");
+        }
+
         boolean result = userToInterfaceInfoService.save(userToInterfaceInfo);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         long newUserToInterfaceInfoId = userToInterfaceInfo.getId();

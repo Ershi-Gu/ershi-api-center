@@ -50,6 +50,14 @@ public interface UserToInterfaceInfoService extends IService<UserToInterfaceInfo
      */
     Page<UserToInterfaceInfoVO> getUserToInterfaceInfoVOPage(Page<UserToInterfaceInfo> userToInterfaceInfoPage, HttpServletRequest request);
 
+
+    /**
+     * 添加调用次数
+     * @param userToInterfaceInfo
+     * @return boolean
+     */
+    boolean addLeftInvokeCount(UserToInterfaceInfo userToInterfaceInfo);
+
     // endregion
 }
 

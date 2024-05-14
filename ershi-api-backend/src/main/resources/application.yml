@@ -105,6 +105,8 @@ knife4j:
         api-rule-resources:
           - com.ershi.springbootinit.controller
 
+
+# Dubbo 配置
 dubbo:
   application:
     name: ershi-api-backend
@@ -113,13 +115,4 @@ dubbo:
     port: -1 # 随机分配协议端口
   registry:
     address: nacos://localhost:8848
-
-
-
-# HTTP 客户端密钥配置
-ershiapi:
-  client:
-    access-key:
-    secret-key:
-
 
