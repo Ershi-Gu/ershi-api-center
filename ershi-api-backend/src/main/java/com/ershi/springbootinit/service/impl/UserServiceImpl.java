@@ -80,6 +80,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+            user.setUserName(userAccount);
             user.setAccessKey(accessKey);
             user.setSecreteKey(secretKey);
             boolean saveResult = this.save(user);

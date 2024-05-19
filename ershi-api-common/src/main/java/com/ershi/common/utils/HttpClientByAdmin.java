@@ -5,6 +5,7 @@ import cn.hutool.http.HttpUtil;
 
 import java.util.Map;
 
+
 public class HttpClientByAdmin {
 
     private String targetHost;
@@ -16,7 +17,12 @@ public class HttpClientByAdmin {
     }
 
     public String byGet(Map paramMap) {
-        String result = HttpUtil.get(targetHost + targetUrl, paramMap);
+        String result;
+        if (paramMap == null) {
+            result = HttpUtil.get(targetHost + targetUrl);
+            return result;
+        }
+        result = HttpUtil.get(targetHost + targetUrl, paramMap);
         return result;
     }
 

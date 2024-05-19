@@ -34,11 +34,16 @@ public class ParameterProcessor {
 
     /**
      * 将 json 参数数据转换为 map
+     *
      * @param jsonString
      * @return {@link Map}<{@link String}, {@link String}>
      * @throws Exception
      */
     public static Map<String, String> jsonToMap(String jsonString) throws Exception {
+
+        if (jsonString == null) {
+            return null;
+        }
 
         // 创建ObjectMapper对象
         ObjectMapper objectMapper = new ObjectMapper();

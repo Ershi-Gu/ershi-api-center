@@ -16,7 +16,7 @@ import java.util.Map;
 public class HttpClient {
 
     // todo 配置网关地址
-    private static final String GATEWAY_HOST = "";
+    private static final String GATEWAY_HOST = "http://localhost:9091";
 
     private String targetUrl = "";
 

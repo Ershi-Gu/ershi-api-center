@@ -306,11 +306,11 @@ public class InterfaceInfoController {
         }
         Long id = interfaceInfoInvokeRequest.getId();
 
-        // 请求参数验证
+//        // 请求参数验证
         String userRequestParams = interfaceInfoInvokeRequest.getUserRequestParams();
-        if (StringUtils.isBlank(userRequestParams)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数错误");
-        }
+//        if (StringUtils.isBlank(userRequestParams)) {
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数错误");
+//        }
 
         // 检验该接口是否存在
         InterfaceInfo interfaceInfo = interfaceinfoService.getById(id);
