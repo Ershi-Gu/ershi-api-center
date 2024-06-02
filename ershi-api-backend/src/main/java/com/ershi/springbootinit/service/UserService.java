@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ershi.common.model.entity.User;
 import com.ershi.springbootinit.model.dto.user.UserQueryRequest;
 import com.ershi.springbootinit.model.vo.LoginUserVO;
+import com.ershi.springbootinit.model.vo.UserSignVO;
 import com.ershi.springbootinit.model.vo.UserVO;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 
@@ -110,6 +111,27 @@ public interface UserService extends IService<User> {
      * @return
      */
     List<UserVO> getUserVO(List<User> userList);
+
+    /**
+     * 获取脱敏用户签名信息
+     * @param user
+     * @return {@link UserSignVO}
+     */
+    public UserSignVO getUserSignVO(User user);
+
+    /**
+     * 获取当前用户的 ak / sk
+     * @param id
+     * @return {@link UserSignVO}
+     */
+    UserSignVO getUserSignVOById(Long id);
+
+    /**
+     * 更新当前登录用户的 ak /sk
+     * @param id
+     * @return boolean
+     */
+    boolean resetUserSign(User loginUser);
 
     /**
      * 获取查询条件

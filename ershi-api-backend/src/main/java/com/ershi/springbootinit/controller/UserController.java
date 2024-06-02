@@ -13,6 +13,7 @@ import com.ershi.springbootinit.config.WxOpenConfig;
 import com.ershi.springbootinit.constant.UserConstant;
 import com.ershi.springbootinit.model.dto.user.*;
 import com.ershi.springbootinit.model.vo.LoginUserVO;
+import com.ershi.springbootinit.model.vo.UserSignVO;
 import com.ershi.springbootinit.model.vo.UserVO;
 import com.ershi.springbootinit.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,6 @@ import static com.ershi.springbootinit.service.impl.UserServiceImpl.SALT;
  * 用户接口
  *
  * @author <a href="https://github.com/Ershi-Gu">Ershi-Gu</a>
- * 
  */
 @RestController
 @RequestMapping("/user")
@@ -97,7 +97,7 @@ public class UserController {
      */
     @GetMapping("/login/wx_open")
     public BaseResponse<LoginUserVO> userLoginByWxOpen(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam("code") String code) {
+                                                       @RequestParam("code") String code) {
         WxOAuth2AccessToken accessToken;
         try {
             WxMpService wxService = wxOpenConfig.getWxMpService();
@@ -197,7 +197,7 @@ public class UserController {
     @PostMapping("/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest,
-            HttpServletRequest request) {
+                                            HttpServletRequest request) {
         if (userUpdateRequest == null || userUpdateRequest.getId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -250,7 +250,7 @@ public class UserController {
     @PostMapping("/list/page")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Page<User>> listUserByPage(@RequestBody UserQueryRequest userQueryRequest,
-            HttpServletRequest request) {
+                                                   HttpServletRequest request) {
         long current = userQueryRequest.getCurrent();
         long size = userQueryRequest.getPageSize();
         Page<User> userPage = userService.page(new Page<>(current, size),
@@ -267,7 +267,7 @@ public class UserController {
      */
     @PostMapping("/list/page/vo")
     public BaseResponse<Page<UserVO>> listUserVOByPage(@RequestBody UserQueryRequest userQueryRequest,
-            HttpServletRequest request) {
+                                                       HttpServletRequest request) {
         if (userQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -294,7 +294,7 @@ public class UserController {
      */
     @PostMapping("/update/my")
     public BaseResponse<Boolean> updateMyUser(@RequestBody UserUpdateMyRequest userUpdateMyRequest,
-            HttpServletRequest request) {
+                                              HttpServletRequest request) {
         if (userUpdateMyRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -306,4 +306,34 @@ public class UserController {
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(true);
     }
+
+
+    // region 密钥
+
+    @GetMapping("/get/sign")
+    public BaseResponse<UserSignVO> getSignById(HttpServletRequest request) {
+        // 判断是否登录
+        User loginUser = userService.getLoginUser(request);
+
+        // 获取 ak / sk
+        Long userId = loginUser.getId();
+        UserSignVO userSignVO = userService.getUserSignVOById(userId);
+        ThrowUtils.throwIf(userSignVO == null, ErrorCode.SYSTEM_ERROR, "返回数据不存在");
+
+        return ResultUtils.success(userSignVO);
+    }
+
+    @PostMapping("/update/sign")
+    public BaseResponse<Boolean> resetUserSign(HttpServletRequest request){
+        // 判断是否登录
+        User loginUser = userService.getLoginUser(request);
+
+        // 重置 ak / sk
+        boolean updateSignResult = userService.resetUserSign(loginUser);
+        ThrowUtils.throwIf(!updateSignResult, ErrorCode.SYSTEM_ERROR, "密钥重置失败");
+
+        return ResultUtils.success(true);
+    }
+
+    // endregion
 }

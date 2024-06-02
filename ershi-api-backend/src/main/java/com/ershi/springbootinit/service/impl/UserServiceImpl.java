@@ -8,11 +8,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ershi.common.exception.BusinessException;
 import com.ershi.common.exception.ErrorCode;
 import com.ershi.common.model.entity.User;
+import com.ershi.common.utils.ThrowUtils;
 import com.ershi.springbootinit.constant.CommonConstant;
 import com.ershi.springbootinit.mapper.UserMapper;
 import com.ershi.springbootinit.model.dto.user.UserQueryRequest;
 import com.ershi.springbootinit.model.enums.UserRoleEnum;
 import com.ershi.springbootinit.model.vo.LoginUserVO;
+import com.ershi.springbootinit.model.vo.UserSignVO;
 import com.ershi.springbootinit.model.vo.UserVO;
 import com.ershi.springbootinit.service.UserService;
 import com.ershi.springbootinit.utils.SqlUtils;
@@ -34,7 +36,6 @@ import static com.ershi.springbootinit.constant.UserConstant.USER_LOGIN_STATE;
  * 用户服务实现
  *
  * @author <a href="https://github.com/Ershi-Gu">Ershi-Gu</a>
- * 
  */
 @Service
 @Slf4j
@@ -254,6 +255,46 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return new ArrayList<>();
         }
         return userList.stream().map(this::getUserVO).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserSignVO getUserSignVO(User user) {
+        if (user == null) {
+            return null;
+        }
+        UserSignVO userSignVO = new UserSignVO();
+        BeanUtils.copyProperties(user, userSignVO);
+        return userSignVO;
+    }
+
+    @Override
+    public UserSignVO getUserSignVOById(Long id) {
+        if (id <= 0) {
+            return null;
+        }
+        User user = this.getById(id);
+        ThrowUtils.throwIf(user == null, ErrorCode.NOT_FOUND_ERROR);
+        UserSignVO userSignVO = getUserSignVO(user);
+        return userSignVO;
+    }
+
+    @Override
+    public boolean resetUserSign(User loginUser) {
+        if (loginUser == null) {
+            return false;
+        }
+        String userAccount = loginUser.getUserAccount();
+
+        // 重置 ak / sk
+        String accessKey = DigestUtil.md5Hex(SALT + userAccount + RandomUtil.randomNumbers(5));
+        String secretKey = DigestUtil.md5Hex(SALT + userAccount + RandomUtil.randomNumbers(8));
+
+        User updateUser = new User();
+        updateUser.setId(loginUser.getId());
+        updateUser.setAccessKey(accessKey);
+        updateUser.setSecreteKey(secretKey);
+
+        return this.updateById(updateUser);
     }
 
     @Override

@@ -93,7 +93,6 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         log.info("请求唯一标识: " + requestId);
         log.info("请求路径: " + url);
         log.info("请求方法: " + method);
-        log.info("请求参数: ");
         log.info("请求来源地址: " + sourceAddress);
 
 //        //2. 黑白名单
@@ -151,6 +150,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
         //6. 动态路由转发至目标接口
         String targetHost = targetInterfaceInfo.getHost();
+        log.info("请求目标主机: " + targetHost);
 
         URI newUrl = null;
         try {
